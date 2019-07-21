@@ -1,0 +1,58 @@
+<h1>About "Current Working Directory"</h1>
+
+<p>The operating system assigns many properties to a process. One such property is the "current working directory". Recall our talk about relative pathes and absolute pathes. Basically a relative path is relative to the current working directory, and an absolute path is not relative to anything.</p>
+
+<p>There are many ways to change the current working directory for a process. The process itself can make a system call to change its current working directory. In python, the script can call:
+    <pre><code>
+        import os
+        os.chdir(new_directory)
+    </code></pre>
+</p>
+<p>Note that 'new_directory' above can also be either a relative path or an absolute path.</p>
+
+<p>Now back to our static site generator. We don't want to use absolute pathes because we want our code to work even if we move the directory around. So we have to use relative pathes</p>
+
+<p>Let's take adel/generate-site.py. The code there only prints the current working directory. Now let's open cmd.exe: <br>
+    <pre><code>
+        cd C:\Users\Adel\Desktop\site-gen\adel\
+        python generate-site.py
+        Output: C:\Users\Adel\Desktop\site-gen\adel\
+
+        cd C:\Users\Adel\Desktop\site-gen\
+        python adel\generate-site.py
+        output: C:\Users\Adel\Desktop\site-gen\
+
+        cd c:\
+        python Users\Adel\Desktop\site-gen\adel\generate-site.py
+        output: C:\
+    </code></pre>
+</p>
+
+<p>This shows we can run the same script but with different "current working directory" based on where we run it from. We can also create a shortcut and set the current working directory for the shortcut as we did with php - we set the current working directory to the directory where we want to place our php code.</p>
+
+<p>When we open the site gen directory in Visual Studio Code and execute our script, VS Code sets the current working directory to the 'site-gen' directory, not the directory containing the script. This can be changed in the settings of VS Code, but let's decide that <b>all your scripts should assume the current working directory to be 'site-gen'</b>, not your own subdirectory.</p>
+
+<p>With that determined, this is the code to open the template.html file, replace SSG_CONTENTS with a simple hard-coded string and store it in an html file in your personal directory:</p>
+
+<pre><code>
+mydir = "adel"
+template_file = open("template.html", "r")
+template_html = template_file.read()
+template_file.close()
+
+new_html = template_html.replace("SSG_CONTENTS", "I LOVE PROGRAMMING!!!!")
+output_file = open(mydir + "/programming.html", "w")
+output_file.write(new_html)
+output_file.close()
+</code></pre>
+
+<p>Now we have generated a page in our personal directory. Note that we don't need to change the current working directory if we want to read the pages in the 'content-pages' directory for example:</p>
+
+<pre><code>
+    # Bad:
+    os.chdir('content-pages')
+    page_files = os.listdir()
+
+    # Good:
+    page_files = os.listdir("content-pages")
+</code></pre>

@@ -1,0 +1,31 @@
+<h1>Naming Functions and Variables</h1>
+
+
+<p>The compiler/language has some restrictions (can not start with a number, can not contain special characters... etc). Other than those restrictions, you need to consider how to name your variables and functions in a way that makes them readable, and to be consistent in your naming style.</p>
+
+<p>Let's consider a function to generate a page. We have two words in the name: 'generate', and 'page'. Technically we can call it g466234, and the compiler will not complain. But people who read your code will curse your ancestors, and you will hate yourself if you find yourself having to go back to your code and work on it after a while. Let's have a look:</p>
+
+<pre><code>
+    # Good names:
+    def GeneratePage():
+    def generate_page():
+    
+    # Bad names:
+    def Generatepage(): # No clear visual separation of words
+    def generatepage(): # No clear visual separation of words
+    def Generate_Page(): #You are already separating words with capitalization,
+     so no need for the underscore
+    def gp(): # Not descriptive
+    def GenerateHtmlPageFromAnotherHtmlPage(): # Too long. If you want to tell what it does exactly,
+     use a comment to compliment the name.
+</code></pre>
+
+<p>This is similar for variables, although it's common to name variables in a different naming style than functions:</p>
+<pre><code>
+    def IsActive():
+        return self.state == ACTIVE
+    
+    is_active = IsActive()
+</code></pre>
+
+<p>Choosing good function and variable names can sometimes be challenging, but it's an art that you master with practice (and going through many code reviews).</p>
